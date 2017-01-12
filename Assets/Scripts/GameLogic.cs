@@ -8,6 +8,7 @@ public class GameLogic : MonoBehaviour {
 	public GameObject startUI, restartUI;
 	public GameObject startPoint, playPoint, restartPoint;
 	public GameObject[] puzzleSpheres;
+	public GameObject sparkleEffect;
 
 	public int puzzleLength = 5; // How many times we light up. This is the difficulty factor. The longer it is the more you have to memorize in-game.
 	public float puzzleSpeed = 1f; // How many seconds between puzzle display pulses
@@ -18,6 +19,7 @@ public class GameLogic : MonoBehaviour {
 	public bool playerWon = false;
 
 	private int currentSolveIndex = 0; // Temporary variable for storing the index that the player is solving for in the pattern.
+	private GameObject sparkle;
 
 	public GameObject failAudioHolder;
 
@@ -43,14 +45,16 @@ public class GameLogic : MonoBehaviour {
 					selectedIndex = i;
 				}
 			}
-			solutionCheck (selectedIndex); // Check if it's correct
+			solutionCheck (selectedIndex, sphere); // Check if it's correct
 		}
 	}
 
-	public void solutionCheck (int playerSelectionIndex) { // We check whether or not the passed index matches the solution index
+	public void solutionCheck (int playerSelectionIndex, GameObject currentSphere) { // We check whether or not the passed index matches the solution index
 		if (playerSelectionIndex == puzzleOrder [currentSolveIndex]) { // Check if the index of the object the player passed is the same as the current solve index in our solution array
 			currentSolveIndex++;
 			Debug.Log("Correct! You've solved " + currentSolveIndex + " out of " + puzzleLength);
+			sparkle = Instantiate(sparkleEffect, currentSphere.transform.position, Quaternion.identity, currentSphere.transform);
+			Destroy (sparkle, 1.0f);
 			if (currentSolveIndex >= puzzleLength) {
 				puzzleSuccess ();
 			}
