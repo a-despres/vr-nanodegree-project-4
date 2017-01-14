@@ -125,6 +125,13 @@ public class GameLogic : MonoBehaviour {
 	public void resetGame () {
 		restartUI.SetActive (false);
 		startUI.SetActive (true);
+
+		// Show the puzzle spheres
+		for (int i = 0; i < puzzleSpheres.Length; i++) {
+			puzzleSpheres [i].GetComponent<lightUp> ().aestheticReset ();
+			puzzleSpheres [i].SetActive (true);
+		}
+
 		playerWon = false;
 		generatePuzzleSequence (); // Generate the puzzle sequence for this playthrough.
 		startPuzzle ();
@@ -138,6 +145,12 @@ public class GameLogic : MonoBehaviour {
 	}
 		
 	public void puzzleSuccess () { //Do this when the player gets it right
+
+		// Hide the puzzle spheres when the player wins
+		for (int i = 0; i < puzzleSpheres.Length; i++) {
+			puzzleSpheres [i].SetActive (false);
+		}
+
 		iTween.MoveTo (player, 
 			iTween.Hash (
 				"position", restartPoint.transform.position, 
